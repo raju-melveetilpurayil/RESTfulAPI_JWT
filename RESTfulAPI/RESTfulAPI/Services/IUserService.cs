@@ -8,5 +8,6 @@ namespace RESTfulAPI.Services
 {
     public interface IUserService: IGenericService<User>
     {
+        Task<bool> IsUserExistsAsync(string email);
     }
 }
