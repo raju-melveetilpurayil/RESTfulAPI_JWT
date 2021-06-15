@@ -49,19 +49,46 @@ namespace RESTfulAPI.JWTHelper
             };
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             string token = tokenHandler.WriteToken(securityToken);
-
-
-            //var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            //var authenticationProperties = new AuthenticationProperties();
-            //authenticationProperties.StoreTokens(new[] {
-            //    new AuthenticationToken()
-            //    {
-            //        Name="JWT",
-            //        Value=token
-            //    }
-            //});
-
             return token;
+        }
+
+        public TokenValidationParameters getTokenValidationParameters()
+        {
+            ConfigReader configReader = new ConfigReader(configuration);
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configReader.GetSection("JWTSigningKey")));
+            var tokenValidationParameters = new TokenValidationParameters()
+            {
+                IssuerSigningKey = signingKey,
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = true,
+                ValidateIssuer = true,
+                ValidateAudience = false,
+                ValidIssuer = configReader.GetSection("ApplicationIssuer"),
+                ValidAudience = configReader.GetSection("ApplicationAudience"),
+                ClockSkew = TimeSpan.Zero
+            };
+
+            return tokenValidationParameters;
+        }
+
+        public string ValidateToken(string token)
+        {
+            string email = string.Empty;
+            ConfigReader configReader = new ConfigReader(configuration);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var signingKey = Encoding.UTF8.GetBytes(configReader.GetSection("JWTSigningKey"));
+
+            try
+            {
+                tokenHandler.ValidateToken(token, getTokenValidationParameters(), out SecurityToken securityToken);
+                var jwtToken = (JwtSecurityToken)securityToken;
+                email = jwtToken.Claims.First(x => x.Type.ToLower() == "email").Value;
+            }
+            catch
+            {
+
+            }
+            return email;
         }
     }
 }

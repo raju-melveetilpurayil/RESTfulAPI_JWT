@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using RESTfulAPI.DataContext;
 using RESTfulAPI.Helpers;
 using RESTfulAPI.JWTHelper;
+using RESTfulAPI.Middleware;
 using RESTfulAPI.Repositories;
 using RESTfulAPI.Services;
 using System;
@@ -53,10 +54,9 @@ namespace RESTfulAPI
                 ValidateIssuer = true,
                 ValidateAudience = false,
                 ValidIssuer = configReader.GetSection("ApplicationIssuer"),
-                ValidAudience = configReader.GetSection("ApplicationAudience")
+                ValidAudience = configReader.GetSection("ApplicationAudience"),
+                ClockSkew=TimeSpan.Zero
             };
-
-            //services.AddSingleton(tokenValidationParameters);
 
 
             //setting basic authendication
@@ -113,7 +113,7 @@ namespace RESTfulAPI
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseJwtMiddleware();
 
             app.UseEndpoints(endpoints =>
             {
