@@ -76,15 +76,19 @@ namespace RESTfulAPI.JWTHelper
             string email = string.Empty;
             ConfigReader configReader = new ConfigReader(configuration);
             var tokenHandler = new JwtSecurityTokenHandler();
-            var signingKey = Encoding.UTF8.GetBytes(configReader.GetSection("JWTSigningKey"));
+
 
             try
             {
                 tokenHandler.ValidateToken(token, getTokenValidationParameters(), out SecurityToken securityToken);
                 var jwtToken = (JwtSecurityToken)securityToken;
-                email = jwtToken.Claims.First(x => x.Type.ToLower() == "email").Value;
+                if (jwtToken.Issuer == configReader.GetSection("ApplicationIssuer"))
+                {
+                    email = jwtToken.Claims.First(x => x.Type.ToLower() == "email").Value;
+                }
+                
             }
-            catch
+            catch(Exception ex)
             {
 
             }

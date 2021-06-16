@@ -44,33 +44,33 @@ namespace RESTfulAPI
             services.AddDbContext<RESTfulDataContext>(options =>
                 options.UseSqlServer(configReader.GetConnectionStringByEnvironment()));
 
-            //reading the siging key from config depend on environment
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configReader.GetSection("JWTSigningKey")));
-            var tokenValidationParameters = new TokenValidationParameters()
-            {
-                IssuerSigningKey = signingKey,
-                ValidateIssuerSigningKey = true,
-                ValidateLifetime = true,
-                ValidateIssuer = true,
-                ValidateAudience = false,
-                ValidIssuer = configReader.GetSection("ApplicationIssuer"),
-                ValidAudience = configReader.GetSection("ApplicationAudience"),
-                ClockSkew=TimeSpan.Zero
-            };
+            ////reading the siging key from config depend on environment
+            //var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configReader.GetSection("JWTSigningKey")));
+            //var tokenValidationParameters = new TokenValidationParameters()
+            //{
+            //    IssuerSigningKey = signingKey,
+            //    ValidateIssuerSigningKey = true,
+            //    ValidateLifetime = true,
+            //    ValidateIssuer = true,
+            //    ValidateAudience = false,
+            //    ValidIssuer = configReader.GetSection("ApplicationIssuer"),
+            //    ValidAudience = configReader.GetSection("ApplicationAudience"),
+            //    ClockSkew=TimeSpan.Zero
+            //};
 
 
-            //setting basic authendication
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.SaveToken = true;
-                options.TokenValidationParameters = tokenValidationParameters;
-            });
+            ////setting basic authendication
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //.AddJwtBearer(options =>
+            //{
+            //    options.SaveToken = true;
+            //    options.TokenValidationParameters = tokenValidationParameters;
+            //});
 
 
             services.AddControllers();
@@ -112,8 +112,9 @@ namespace RESTfulAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
             app.UseJwtMiddleware();
+            
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

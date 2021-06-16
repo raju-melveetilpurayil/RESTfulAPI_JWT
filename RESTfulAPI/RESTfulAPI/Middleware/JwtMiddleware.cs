@@ -10,11 +10,11 @@ namespace RESTfulAPI.Middleware
 {
     public class JwtMiddleware
     {
-        private readonly RequestDelegate _next;
+        private readonly RequestDelegate next;
 
         public JwtMiddleware(RequestDelegate next)
         {
-            _next = next;
+            this.next = next;
         }
         public async Task InvokeAsync(HttpContext context,IJWTHelper iJWTHelper)
         {
@@ -27,7 +27,7 @@ namespace RESTfulAPI.Middleware
                     context.Items["IsValidRequest"] = true;
                 }
             }
-            await _next(context);
+            await next(context);
         }
     }
 }
