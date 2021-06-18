@@ -40,7 +40,7 @@ namespace RESTfulAPI
 
             var tokenValidationParameters = new JWTHelper.JWTHelper(Configuration).GetTokenValidationParameters();
 
-            //setting jwt authendication scheme
+            //setting jwt authentication scheme
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -53,7 +53,6 @@ namespace RESTfulAPI
                 options.TokenValidationParameters = tokenValidationParameters;
             });
             services.AddControllers();
-            //services.AddSwaggerGen();
 
             //Swagger implimentation, to test the API
             services.AddSwaggerGen(c =>
@@ -94,6 +93,7 @@ namespace RESTfulAPI
 
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
