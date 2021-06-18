@@ -9,7 +9,6 @@ namespace RESTfulAPI.JWTHelper
     public interface IJWTHelper
     {
         string GetToken(string email);
-        string ValidateToken(string token);
-        TokenValidationParameters getTokenValidationParameters();
+        TokenValidationParameters GetTokenValidationParameters();
     }
 }

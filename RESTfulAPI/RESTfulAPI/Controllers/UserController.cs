@@ -86,7 +86,7 @@ namespace RESTfulAPI.Controllers
         {
             return Ok(new
             {
-                Message = "I am authenticated, I can to see this."
+                Message = "I am authorized, I can to see this."
             });
         }
 

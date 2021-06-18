@@ -16,12 +16,10 @@ namespace RESTfulAPI.JWTHelper
     public class JWTHelper : IJWTHelper
     {
         private readonly IConfiguration configuration;
-        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public JWTHelper(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public JWTHelper(IConfiguration configuration)
         {
             this.configuration = configuration;
-            this.httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -52,7 +50,7 @@ namespace RESTfulAPI.JWTHelper
             return token;
         }
 
-        public TokenValidationParameters getTokenValidationParameters()
+        public TokenValidationParameters GetTokenValidationParameters()
         {
             ConfigReader configReader = new ConfigReader(configuration);
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configReader.GetSection("JWTSigningKey")));
@@ -71,28 +69,5 @@ namespace RESTfulAPI.JWTHelper
             return tokenValidationParameters;
         }
 
-        public string ValidateToken(string token)
-        {
-            string email = string.Empty;
-            ConfigReader configReader = new ConfigReader(configuration);
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-
-            try
-            {
-                tokenHandler.ValidateToken(token, getTokenValidationParameters(), out SecurityToken securityToken);
-                var jwtToken = (JwtSecurityToken)securityToken;
-                if (jwtToken.Issuer == configReader.GetSection("ApplicationIssuer"))
-                {
-                    email = jwtToken.Claims.First(x => x.Type.ToLower() == "email").Value;
-                }
-                
-            }
-            catch(Exception ex)
-            {
-
-            }
-            return email;
-        }
     }
 }

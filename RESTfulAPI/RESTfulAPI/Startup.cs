@@ -2,25 +2,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using RESTfulAPI.DataContext;
 using RESTfulAPI.Helpers;
 using RESTfulAPI.JWTHelper;
-using RESTfulAPI.Middleware;
 using RESTfulAPI.Repositories;
 using RESTfulAPI.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RESTfulAPI
 {
@@ -38,41 +32,26 @@ namespace RESTfulAPI
         {
             //config reader 
             var configReader = new ConfigReader(Configuration);
-
+            services.AddHttpContextAccessor();
 
             //Database connection
             services.AddDbContext<RESTfulDataContext>(options =>
                 options.UseSqlServer(configReader.GetConnectionStringByEnvironment()));
 
-            ////reading the siging key from config depend on environment
-            //var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configReader.GetSection("JWTSigningKey")));
-            //var tokenValidationParameters = new TokenValidationParameters()
-            //{
-            //    IssuerSigningKey = signingKey,
-            //    ValidateIssuerSigningKey = true,
-            //    ValidateLifetime = true,
-            //    ValidateIssuer = true,
-            //    ValidateAudience = false,
-            //    ValidIssuer = configReader.GetSection("ApplicationIssuer"),
-            //    ValidAudience = configReader.GetSection("ApplicationAudience"),
-            //    ClockSkew=TimeSpan.Zero
-            //};
+            var tokenValidationParameters = new JWTHelper.JWTHelper(Configuration).GetTokenValidationParameters();
 
-
-            ////setting basic authendication
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //.AddJwtBearer(options =>
-            //{
-            //    options.SaveToken = true;
-            //    options.TokenValidationParameters = tokenValidationParameters;
-            //});
-
-
+            //setting jwt authendication scheme
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = false;
+                options.TokenValidationParameters = tokenValidationParameters;
+            });
             services.AddControllers();
             //services.AddSwaggerGen();
 
@@ -81,7 +60,7 @@ namespace RESTfulAPI
             {
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
-
+            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //Anti forgery token
             services.AddAntiforgery(o => { o.HeaderName = "XSRF-TOKEN"; });
@@ -106,16 +85,15 @@ namespace RESTfulAPI
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("v1/swagger.json", "User API");
+                c.SwaggerEndpoint("v1/swagger.json", "RESTful Web API");
             });
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseJwtMiddleware();
-            
-            app.UseAuthorization();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
