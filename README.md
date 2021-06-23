@@ -27,9 +27,11 @@ Microsoft.EntityFrameworkCore.SqlServer
 5. Call `api\user\login` by passing email and password to get the user token.
 6: You can copy the user token and call `api\user\Dashboard` with token as Bearer Token in the header of the request.
 
-## Sample Requests
+## Sample Requests screens
 [`api/user/register`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT/blob/main/RESTfulAPI/images/register.PNG)
+
 [`api/user/login`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT/blob/main/RESTfulAPI/images/dashboard.PNG)
+
 [`api/user/dashboard`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT/blob/main/RESTfulAPI/images/dashboard.PNG)
 
 
