@@ -30,7 +30,7 @@ Microsoft.EntityFrameworkCore.SqlServer
 ## Sample Requests screens
 [`api/user/register`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT/blob/main/RESTfulAPI/images/register.PNG)
 
-[`api/user/login`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT/blob/main/RESTfulAPI/images/dashboard.PNG)
+[`api/user/login`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT/blob/main/RESTfulAPI/images/login.PNG)
 
 [`api/user/dashboard`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT/blob/main/RESTfulAPI/images/dashboard.PNG)
 
