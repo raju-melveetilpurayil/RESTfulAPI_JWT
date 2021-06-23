@@ -35,7 +35,7 @@ Microsoft.EntityFrameworkCore.SqlServer
 [`api/user/dashboard`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT/blob/main/RESTfulAPI/images/dashboard.PNG)
 
 
-### Database Table script
+## Database Table script
 Create a database `RESTful_JWT` then run below script to add `User` table
 
 ```
