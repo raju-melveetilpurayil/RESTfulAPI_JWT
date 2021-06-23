@@ -20,17 +20,17 @@ Microsoft.EntityFrameworkCore.SqlServer
 ```
 
 ## How to run?
-1. Download or clone project from
- ```
- https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT.git
- ```
+1. Download or clone project [`https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT.git`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT.git)
 2. Open in visual studio, then Build and Run
 3. You need [Postman](https://www.postman.com/) or [Fiddler](https://www.telerik.com/fiddler)to test this application because there is no UI includeden in this project. 
-4. You can create a user by calling `api/user/register` by passing email and password parameter *There is no model validation included*
-5. Call `api/user/login` by passing email and password to get the user token.
-6. You can copy the user token and call `api/user/Dashboard` with token as Bearer Token in the header of the request.
+4. You can create a user by calling `api/user/register` by passing `email` and `password` parameter *There is no model validation included in this project*
+5. Call `api\user\login` by passing email and password to get the user token.
+6: You can copy the user token and call `api\user\Dashboard` with token as Bearer Token in the header of the request.
 
-
+## Sample Requests
+[`api/user/register`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT/blob/main/RESTfulAPI/images/register.PNG)
+[`api/user/login`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT/blob/main/RESTfulAPI/images/dashboard.PNG)
+[`api/user/dashboard`](https://github.com/raju-melveetilpurayil/RESTfulAPI_JWT/blob/main/RESTfulAPI/images/dashboard.PNG)
 
 
 
